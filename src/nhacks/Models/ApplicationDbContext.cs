@@ -16,11 +16,12 @@ namespace nhacks.Models
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
 
-            //Users <-> MultiShopOrganization many-to-many relationship
+            //Users <-> UserGroup many-to-many relationship
             builder.Entity<UserGroup>()
                 .HasKey(t => new { t.UserId, t.GroupId });
         }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Group> Group { get; set; }
     }
 }
