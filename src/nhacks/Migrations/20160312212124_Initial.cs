@@ -144,6 +144,33 @@ namespace nhacks.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
             migrationBuilder.CreateTable(
+                name: "Picture",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GroupId = table.Column<int>(nullable: false),
+                    ScannedAt = table.Column<DateTime>(nullable: false),
+                    ScannedUserId = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Picture", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Picture_Group_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Group",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Picture_ApplicationUser_ScannedUserId",
+                        column: x => x.ScannedUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+            migrationBuilder.CreateTable(
                 name: "UserGroup",
                 columns: table => new
                 {
@@ -186,6 +213,7 @@ namespace nhacks.Migrations
             migrationBuilder.DropTable("AspNetUserClaims");
             migrationBuilder.DropTable("AspNetUserLogins");
             migrationBuilder.DropTable("AspNetUserRoles");
+            migrationBuilder.DropTable("Picture");
             migrationBuilder.DropTable("UserGroup");
             migrationBuilder.DropTable("AspNetRoles");
             migrationBuilder.DropTable("Group");

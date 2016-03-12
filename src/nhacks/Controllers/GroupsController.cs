@@ -103,6 +103,7 @@ namespace nhacks.Controllers
                 return HttpBadRequest(ModelState);
             }
             group.OwnerId = User.GetUserId();
+
             _context.Group.Add(group);
 
             var userGroup = new UserGroup { UserId = User.GetUserId(), GroupId = group.Id };

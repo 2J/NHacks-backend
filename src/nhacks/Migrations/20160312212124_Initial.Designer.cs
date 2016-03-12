@@ -8,7 +8,7 @@ using nhacks.Models;
 namespace nhacks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160312193034_Initial")]
+    [Migration("20160312212124_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -164,6 +164,22 @@ namespace nhacks.Migrations
                     b.HasKey("Id");
                 });
 
+            modelBuilder.Entity("nhacks.Models.Picture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("GroupId");
+
+                    b.Property<DateTime>("ScannedAt");
+
+                    b.Property<string>("ScannedUserId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+                });
+
             modelBuilder.Entity("nhacks.Models.UserGroup", b =>
                 {
                     b.Property<string>("UserId");
@@ -203,6 +219,17 @@ namespace nhacks.Migrations
                     b.HasOne("nhacks.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("nhacks.Models.Picture", b =>
+                {
+                    b.HasOne("nhacks.Models.Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("nhacks.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ScannedUserId");
                 });
 
             modelBuilder.Entity("nhacks.Models.UserGroup", b =>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -23,7 +24,7 @@ namespace nhacks.Services
             values.Add("selector", selector);
             values.Add("symmetricFill", symmetricFill);
 
-            var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
             request.DefaultRequestHeaders.Add("app_id", AppId);
             request.DefaultRequestHeaders.Add("app_key", AppKey);
             var result = request.PostAsync("https://api.kairos.com/enroll", content).Result;
@@ -37,7 +38,7 @@ namespace nhacks.Services
             values.Add("image", imgData);
             values.Add("gallery_name", galleryName);
 
-            var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
             request.DefaultRequestHeaders.Add("app_id", AppId);
             request.DefaultRequestHeaders.Add("app_key", AppKey);
             var result = request.PostAsync("https://api.kairos.com/recognize", content).Result;
@@ -51,7 +52,7 @@ namespace nhacks.Services
             values.Add("image", imgData);
             values.Add("selector", selector);
 
-            var content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
             request.DefaultRequestHeaders.Add("app_id", AppId);
             request.DefaultRequestHeaders.Add("app_key", AppKey);
             var result = request.PostAsync("https://api.kairos.com/detect", content).Result;
@@ -62,7 +63,7 @@ namespace nhacks.Services
         {
             var request = new HttpClient();
             var values = new Dictionary<string, string>();
-            var content = new FormUrlEncodedContent(values); //do not need this
+            var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json"); //TODO: test if it works when blank
             request.DefaultRequestHeaders.Add("app_id", AppId);
             request.DefaultRequestHeaders.Add("app_key", AppKey);
             var result = request.PostAsync("https://api.kairos.com/gallery/list_all", content).Result;
@@ -75,7 +76,7 @@ namespace nhacks.Services
             var values = new Dictionary<string, string>();
             values.Add("gallery_name", galleryName);
 
-            var content = new FormUrlEncodedContent(values);
+            var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
             request.DefaultRequestHeaders.Add("app_id", AppId);
             request.DefaultRequestHeaders.Add("app_key", AppKey);
             var result = request.PostAsync("https://api.kairos.com/gallery/view", content).Result;
@@ -88,7 +89,7 @@ namespace nhacks.Services
             var values = new Dictionary<string, string>();
             values.Add("gallery_name", galleryName);
 
-            var content = new FormUrlEncodedContent(values);
+            var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
             request.DefaultRequestHeaders.Add("app_id", AppId);
             request.DefaultRequestHeaders.Add("app_key", AppKey);
             var result = request.PostAsync("https://api.kairos.com/gallery/remove", content).Result;
@@ -102,7 +103,7 @@ namespace nhacks.Services
             values.Add("gallery_name", galleryName);
             values.Add("subject_id", subjectId);
 
-            var content = new FormUrlEncodedContent(values);
+            var content = new StringContent(JsonConvert.SerializeObject(values), Encoding.UTF8, "application/json");
             request.DefaultRequestHeaders.Add("app_id", AppId);
             request.DefaultRequestHeaders.Add("app_key", AppKey);
             var result = request.PostAsync("https://api.kairos.com/gallery/remove_subject", content).Result;

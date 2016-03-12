@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
+using nhacks.Models;
 
 namespace nhacks.Models
 {
@@ -23,5 +24,6 @@ namespace nhacks.Models
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Group> Group { get; set; }
+        public DbSet<Picture> Picture { get; set; }
     }
 }
