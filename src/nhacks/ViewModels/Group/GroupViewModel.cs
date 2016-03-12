@@ -28,12 +28,15 @@ namespace nhacks.ViewModels.Group
             viewModel.Description = group.Description;
             viewModel.Password = group.Password;
             viewModel.UserGroups = group.UserGroups;
-            foreach(var userGroup in viewModel.UserGroups)
+            if(viewModel.UserGroups != null)
             {
-                userGroup.Group = null;
-                if(userGroup.User != null) //TODO: Change to user view model
+                foreach (var userGroup in viewModel.UserGroups)
                 {
-                    userGroup.User.UserGroups = null;
+                    userGroup.Group = null;
+                    if (userGroup.User != null) //TODO: Change to user view model
+                    {
+                        userGroup.User.UserGroups = null;
+                    }
                 }
             }
 

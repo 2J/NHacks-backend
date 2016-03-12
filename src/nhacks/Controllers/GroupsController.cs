@@ -8,6 +8,7 @@ using nhacks.Models;
 using System.Security.Claims;
 using Microsoft.AspNet.Authorization;
 using nhacks.ViewModels.Group;
+using nhacks.Services;
 
 namespace nhacks.Controllers
 {
@@ -65,6 +66,8 @@ namespace nhacks.Controllers
                 return HttpBadRequest(ModelState);
             }
 
+            //TODO: check if group owner
+
             if (id != group.Id)
             {
                 return HttpBadRequest();
@@ -99,9 +102,7 @@ namespace nhacks.Controllers
             {
                 return HttpBadRequest(ModelState);
             }
-
-            //TODO: check if group owner
-
+            group.OwnerId = User.GetUserId();
             _context.Group.Add(group);
 
             var userGroup = new UserGroup { UserId = User.GetUserId(), GroupId = group.Id };
