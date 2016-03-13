@@ -144,6 +144,26 @@ namespace nhacks.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
             migrationBuilder.CreateTable(
+                name: "Social",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Network = table.Column<string>(nullable: false),
+                    Url = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Social", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Social_ApplicationUser_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+            migrationBuilder.CreateTable(
                 name: "Picture",
                 columns: table => new
                 {
@@ -214,6 +234,7 @@ namespace nhacks.Migrations
             migrationBuilder.DropTable("AspNetUserLogins");
             migrationBuilder.DropTable("AspNetUserRoles");
             migrationBuilder.DropTable("Picture");
+            migrationBuilder.DropTable("Social");
             migrationBuilder.DropTable("UserGroup");
             migrationBuilder.DropTable("AspNetRoles");
             migrationBuilder.DropTable("Group");

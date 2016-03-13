@@ -12,6 +12,7 @@ using System.Security.Claims;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using nhacks.ViewModels.User;
 
 namespace nhacks.Controllers
 {
@@ -82,12 +83,17 @@ namespace nhacks.Controllers
                 {
                     if (float.Parse(transactionJson.SelectToken("confidence").ToString()) > 0.5) //FIXME: CONFIDENCE LEVEL REQUIRED FOR MATCH
                     {
-                        var scanned_user = _context.ApplicationUser.SingleOrDefault(u => u.Id == transactionJson.SelectToken("subject").ToString());
+                        var scanned_user = _context.ApplicationUser
+                            .Include(u => u.Socials)
+                            .SingleOrDefault(u => u.Id == transactionJson.SelectToken("subject").ToString());
                         if(scanned_user != null)
                         {
-                            _context.Picture.Add(new Picture { GroupId = Int32.Parse(scanViewModel.GroupId), UserId = User.GetUserId(), ScannedUserId = scanned_user.Id });
-                            var saveResult = await _context.SaveChangesAsync();
-                            return Ok(scanned_user);
+                            if(!_context.Picture.Where(p => (p.GroupId == int.Parse(scanViewModel.GroupId)) && (p.UserId == User.GetUserId()) && (p.ScannedUserId == scanned_user.Id)).Any())
+                            {
+                                _context.Picture.Add(new Picture { GroupId = Int32.Parse(scanViewModel.GroupId), UserId = User.GetUserId(), ScannedUserId = scanned_user.Id });
+                                var saveResult = await _context.SaveChangesAsync();
+                            }
+                            return Ok(UserViewModel.ToViewModel(scanned_user));
                         }
 
                     }

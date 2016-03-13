@@ -9,6 +9,8 @@ namespace nhacks.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public virtual ICollection<UserGroup> UserGroups { get; set; } //TODO: Not sure if should be icollection or list
+        public virtual ICollection<UserGroup> UserGroups { get; set; }
+
+        public virtual ICollection<Social> Socials { get; set; }
     }
 }

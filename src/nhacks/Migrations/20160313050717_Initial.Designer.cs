@@ -8,7 +8,7 @@ using nhacks.Models;
 namespace nhacks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160312212124_Initial")]
+    [Migration("20160313050717_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,6 +180,23 @@ namespace nhacks.Migrations
                     b.HasKey("Id");
                 });
 
+            modelBuilder.Entity("nhacks.Models.Social", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Network")
+                        .IsRequired();
+
+                    b.Property<string>("Url")
+                        .IsRequired();
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+                });
+
             modelBuilder.Entity("nhacks.Models.UserGroup", b =>
                 {
                     b.Property<string>("UserId");
@@ -230,6 +247,13 @@ namespace nhacks.Migrations
                     b.HasOne("nhacks.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ScannedUserId");
+                });
+
+            modelBuilder.Entity("nhacks.Models.Social", b =>
+                {
+                    b.HasOne("nhacks.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("nhacks.Models.UserGroup", b =>

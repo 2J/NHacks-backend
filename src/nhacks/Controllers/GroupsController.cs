@@ -48,6 +48,7 @@ namespace nhacks.Controllers
             Group group = await _context.Group
                 .Include(g => g.UserGroups)
                 .ThenInclude(ug => ug.User)
+                .ThenInclude(u => u.Socials)
                 .SingleAsync(m => m.Id == id);
             if (group == null)
             {
@@ -164,6 +165,7 @@ namespace nhacks.Controllers
             //TODO: Check if user is in group
             var pictures = await _context.Picture
                 .Include(p => p.ScannedUser)
+                .ThenInclude(u => u.Socials)
                 .Where(p => p.UserId == User.GetUserId() && p.GroupId == id)
                 .ToListAsync();
 

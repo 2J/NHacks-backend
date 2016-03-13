@@ -25,5 +25,6 @@ namespace nhacks.Models
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<Group> Group { get; set; }
         public DbSet<Picture> Picture { get; set; }
+        public DbSet<Social> Social { get; set; }
     }
 }

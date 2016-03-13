@@ -36,6 +36,13 @@ namespace nhacks.ViewModels.Group
                     if (userGroup.User != null) //TODO: Change to user view model
                     {
                         userGroup.User.UserGroups = null;
+                        if(userGroup.User.Socials != null)
+                        {
+                            foreach(var social in userGroup.User.Socials)
+                            {
+                                social.User = null;
+                            }
+                        }
                     }
                 }
             }

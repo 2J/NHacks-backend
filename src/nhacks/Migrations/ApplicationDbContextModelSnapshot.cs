@@ -179,6 +179,23 @@ namespace nhacks.Migrations
                     b.HasKey("Id");
                 });
 
+            modelBuilder.Entity("nhacks.Models.Social", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Network")
+                        .IsRequired();
+
+                    b.Property<string>("Url")
+                        .IsRequired();
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+                });
+
             modelBuilder.Entity("nhacks.Models.UserGroup", b =>
                 {
                     b.Property<string>("UserId");
@@ -229,6 +246,13 @@ namespace nhacks.Migrations
                     b.HasOne("nhacks.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ScannedUserId");
+                });
+
+            modelBuilder.Entity("nhacks.Models.Social", b =>
+                {
+                    b.HasOne("nhacks.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("nhacks.Models.UserGroup", b =>
