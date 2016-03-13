@@ -11,6 +11,7 @@ using nhacks.Services;
 using System.Security.Claims;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace nhacks.Controllers
 {
@@ -81,7 +82,14 @@ namespace nhacks.Controllers
                 {
                     if (float.Parse(transactionJson.SelectToken("confidence").ToString()) > 0.5) //FIXME: CONFIDENCE LEVEL REQUIRED FOR MATCH
                     {
-                        return Ok(_context.ApplicationUser.Single(u => u.Id == transactionJson.SelectToken("subject").ToString()));
+                        var scanned_user = _context.ApplicationUser.SingleOrDefault(u => u.Id == transactionJson.SelectToken("subject").ToString());
+                        if(scanned_user != null)
+                        {
+                            _context.Picture.Add(new Picture { GroupId = Int32.Parse(scanViewModel.GroupId), UserId = User.GetUserId(), ScannedUserId = scanned_user.Id });
+                            var saveResult = await _context.SaveChangesAsync();
+                            return Ok(scanned_user);
+                        }
+
                     }
                     else
                     {
@@ -89,7 +97,6 @@ namespace nhacks.Controllers
                     }
                     //transactionJson.SelectToken("");
                     return new HttpStatusCodeResult(StatusCodes.Status200OK); //TODO: Add scanned face to DB
-
                 }
                 else
                 {

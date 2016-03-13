@@ -25,7 +25,7 @@ namespace nhacks.Controllers
         }
 
         // GET: api/Groups
-        [HttpGet]
+        [HttpGet("")]
         public async Task<IActionResult> GetGroup()
         {
             IQueryable<Group> groupQuery = _context.Group;
@@ -126,6 +126,48 @@ namespace nhacks.Controllers
             }
 
             return CreatedAtRoute("GetGroup", new { id = group.Id }, GroupViewModel.ToViewModel(group));
+        }
+
+        // POST: api/Groups/join
+        [HttpPost("join")]
+        public async Task<IActionResult> PostJoinGroup([FromBody] GroupJoinViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+            var group = _context.Group.Where(g => g.Name.ToLower() == viewModel.Name.ToLower() && g.Password == viewModel.Password).SingleOrDefault();
+
+            if(group == null)
+            {
+                return new HttpStatusCodeResult(StatusCodes.Status400BadRequest);
+            }
+
+            var userGroup = new UserGroup { UserId = User.GetUserId(), GroupId = group.Id };
+            _context.UserGroup.Add(userGroup);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+            }
+
+            return CreatedAtRoute("GetGroup", new { id = group.Id }, GroupViewModel.ToViewModel(group));
+        }
+
+        // GET: api/Groups/1/scanned
+        [HttpGet("{id}/scanned", Name = "GetScannedGroup")]
+        public async Task<IActionResult> GetScannedGroup([FromRoute] int id)
+        {
+            //TODO: Check if user is in group
+            var pictures = await _context.Picture
+                .Include(p => p.ScannedUser)
+                .Where(p => p.UserId == User.GetUserId() && p.GroupId == id)
+                .ToListAsync();
+
+            return Ok(pictures);
         }
 
         // DELETE: api/Groups/5
